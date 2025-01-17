@@ -1,18 +1,16 @@
-<div id="createBoardModal" class="modal">
-    <div class="modal-content">
-        <span class="close" id="closeModal">&times;</span>
-        <h2>새 게시글 작성</h2>
-        <form action="/board/write" method="post">
-            <label for="title">제목:</label>
-            <input type="text" id="title" name="title" required>
-
-            <label for="author">작성자:</label>
-            <input type="text" id="author" name="author" required>
-
-            <label for="content">내용:</label>
-            <textarea id="content" name="content" rows="5" required></textarea>
-
-            <button type="submit">작성하기</button>
-        </form>
-    </div>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<div class="modal-header">새 게시물 작성</div>
+<div class="modal-body">
+    <form action="/createPost" method="post">
+        <label for="title">제목:</label>
+        <input type="text" id="title" name="title" required>
+        <br><br>
+        <label for="content">내용:</label>
+        <textarea id="content" name="content" rows="4" required></textarea>
+        <br><br>
+        <button type="submit">저장</button>
+    </form>
+</div>
+<div class="modal-footer">
+    <button onclick="closeModal()">닫기</button>
 </div>
