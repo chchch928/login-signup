@@ -20,7 +20,8 @@
     border-radius: 16px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     z-index: 1000;
-    width: 420px;
+    width: 500px;
+
 }
 
 .modal-header {
@@ -29,6 +30,8 @@
     margin-bottom: 15px;
     color: #202124;
 }
+
+
 
 .modal-footer {
     text-align: right;

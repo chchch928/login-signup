@@ -7,6 +7,9 @@
     <link rel="stylesheet" type="text/css" href="css/sidebar.css">
     <link rel="stylesheet" type="text/css" href="css/board.css">
     <link rel="stylesheet" type="text/css" href="css/modal.css">
+    <link rel="stylesheet" type="text/css" href ="css/create-board-modal.css">
+
+    <script src="js/index.js" type="module" defer></script>
 </head>
 <body>
 <header>
@@ -20,8 +23,7 @@
 <div class="modal" id="modal">
     <%@ include file="components/create-board-modal.jsp" %>
 </div>
-<script src="js/index.js"></script>
-<script src="js/modal.js"></script>
+<%--<script src="js/modal.js"></script>--%>
+
 </body>
 </html>
-
