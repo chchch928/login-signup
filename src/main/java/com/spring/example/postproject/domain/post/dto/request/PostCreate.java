@@ -1,4 +1,5 @@
 package com.spring.example.postproject.domain.post.dto.request;
+import com.spring.example.postproject.domain.post.entity.Post;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -12,4 +13,11 @@ public class PostCreate {
     private String writer;
     @Size(max = 100, message = "피드 내용은 최대 100자까지 입력 가능합니다.")
     private String content;
+
+    public Post toEntity() {
+        return Post.builder()
+                .writer(this.writer)
+                .content(this.content)
+                .build();
+    }
 }

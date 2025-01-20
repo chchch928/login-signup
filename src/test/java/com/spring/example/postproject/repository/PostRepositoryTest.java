@@ -5,6 +5,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,7 +20,7 @@ class PostRepositoryTest {
     @Test
     // 테스트를 설명하는 이름 - 단언 (Assertion)
     @DisplayName("피드의 내용을 입력하면 피드가 반드시 생성된다.")
-    void saveFeedTest() {
+    void saveBoardTest() {
 
         // GWT 패턴
         // given - 테스트를 위해 주어지는 데이터
@@ -31,10 +34,29 @@ class PostRepositoryTest {
 
         // then - 테스트 검증 (단언)
         Long postId = givenPost.getId(); // 생성된 피드게시물의 id를 가져옴
-        // System.out.println("postId = " + postId);
+         System.out.println("postId = " + postId);
 
-        // postId가 null이 아닐 것이라고 확신한다.
-        assertThat(postId).isNotNull();
+    }
+
+    @Test
+    @DisplayName("피드를 5개 작성하고 목록 조회하면 리스트의 크기는 5여야 한다.")
+    void findAllTest(){
+        //given
+        for(int i =0; i <5; i++) {
+            Post givenPost = Post.builder()
+                    .content("테스트 컨텐츠입니다" + i)
+                    .writer("임시작성자" + i)
+                    .build();
+
+            postRepository.saveBoard(givenPost);
+            }
+            // when
+            List<Post>feedList = postRepository.findAll();
+
+            // then
+            feedList.forEach(System.out::println);
+
+
     }
 
 

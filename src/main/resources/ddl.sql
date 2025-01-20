@@ -15,7 +15,6 @@ CREATE TABLE posts
 
 );
 
-
 -- 회원 테이블
 CREATE TABLE users
 (

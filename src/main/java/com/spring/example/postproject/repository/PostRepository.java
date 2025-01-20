@@ -9,7 +9,7 @@ import java.util.List;
 public interface PostRepository {
 
     // 게시물 저장
-    void saveBoard (Post post);
+    void saveBoard(Post post);
 
     // 게시물 전체목록 조회
     List<Post> findAll();
