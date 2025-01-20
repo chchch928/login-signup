@@ -23,7 +23,7 @@
 <div class="modal" id="modal">
     <%@ include file="components/create-board-modal.jsp" %>
 </div>
-<%--<script src="js/modal.js"></script>--%>
+
 
 </body>
 </html>

@@ -5,9 +5,9 @@
     <!--  saveBoard  -->
     <insert id ="saveBoard" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO posts
-            (content, writer)
+            (title, content, writer)
         VALUES
-            (#{content}, #{writer})
+            (#{title}, #{content}, #{writer})
     </insert>
 
     <!--  findAll  -->

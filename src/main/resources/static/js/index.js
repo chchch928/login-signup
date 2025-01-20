@@ -1,4 +1,12 @@
 
+import initBoard from './components/board.js'
+
+// DOMContentLoaded 이벤트에 초기화 로직 연결
+document.addEventListener('DOMContentLoaded', () => {
+    initBoard();
+});
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const boardItems = document.querySelectorAll('.board-item');
     const modal = document.getElementById('modal');
@@ -32,3 +40,5 @@ document.addEventListener('DOMContentLoaded', () => {
         closeButton.addEventListener('click', closeModal);
     }
 });
+
+

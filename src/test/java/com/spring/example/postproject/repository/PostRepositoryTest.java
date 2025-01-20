@@ -25,6 +25,7 @@ class PostRepositoryTest {
         // GWT 패턴
         // given - 테스트를 위해 주어지는 데이터
         Post givenPost = Post.builder()
+                .title("제목 테스트")
                 .content("테스트 컨텐츠입니다")
                 .writer("임시작성자")
                 .build();
@@ -44,6 +45,7 @@ class PostRepositoryTest {
         //given
         for(int i =0; i <5; i++) {
             Post givenPost = Post.builder()
+                    .title("제목" + i)
                     .content("테스트 컨텐츠입니다" + i)
                     .writer("임시작성자" + i)
                     .build();
