@@ -32,3 +32,4 @@ CREATE TABLE users
     INDEX idx_email (email),
     INDEX idx_username (username)
 );
+

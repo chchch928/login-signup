@@ -5,10 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입</title>
-    <link rel="stylesheet" href="css/auth/components/layout.css">
-    <link rel="stylesheet" href="css/auth/components/card.css">
-    <link rel="stylesheet" href="css/auth/components/form.css">
-    <link rel="stylesheet" href="css/auth/components/signup.css">
+    <link rel="stylesheet" href="css/auth/pages/signup.css">
 
     <script type="module" src="/js/auth/signup.js" defer></script>
 </head>

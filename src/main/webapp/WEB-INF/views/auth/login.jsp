@@ -5,10 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>로그인</title>
-    <link rel="stylesheet" href="css/auth/components/layout.css">
-    <link rel="stylesheet" href="css/auth/components/card.css">
-    <link rel="stylesheet" href="css/auth/components/form.css">
-    <link rel="stylesheet" href="css/auth/components/login.css">
+    <link rel="stylesheet" href="css/auth/pages/login.css">
 
     <script src="/js/auth/login.js" defer></script>
 </head>
