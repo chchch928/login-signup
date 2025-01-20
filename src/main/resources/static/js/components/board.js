@@ -18,28 +18,8 @@ function formatDate(isoDate) {
     });
 }
 
-function truncateContent(writer, content, maxLength = 20) {
-    // 1. 먼저 텍스트 길이 체크
-    if (content.length <= maxLength) {
-        return `
-      <a href="#" class="post-username">${writer}</a>
-      <span class="post-caption">${content}</span>
-    `;
-    }
-    // 2. 긴 텍스트의 경우 처리
-    const truncatedContent = content.substring(0, maxLength);
-    return `
-    <a href="#" class="post-username">${writer}</a>
-    <span class="post-caption post-caption-truncated">
-      <span class="truncated-text">${truncatedContent}...</span>
-      <span class="full-text" style="display: none;">${content}</span>
-    </span>
-    <button class="more-button">더 보기</button>
-  `;
-}
 
-
-function createBoardItem({title, content, writer,createdAt}){
+function createBoardItem({title, content, writer, createdAt}){
 
 
     return `
@@ -48,7 +28,7 @@ function createBoardItem({title, content, writer,createdAt}){
            <div class ="left-container">
            
                 <h2>${title}</h2>
-                <p>${truncateContent(content)}</p>
+                <p>${content}</p>
                 <span class ="post-time">
                     ${formatDate(createdAt)}
                 </span>

@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="css/auth/components/card.css">
     <link rel="stylesheet" href="css/auth/components/form.css">
     <link rel="stylesheet" href="css/auth/components/signup.css">
+
+    <script type="module" src="/js/auth/signup.js" defer></script>
 </head>
 <body>
 <div class="signup-container">
@@ -34,7 +36,7 @@
             <button type="submit" class="btn">회원가입</button>
         </form>
         <div class="separator">이미 계정이 있습니까?</div>
-        <a href="login.jsp" class="btn-link">로그인</a>
+        <a href="/" class="btn-link">로그인</a>
     </div>
 </div>
 </body>
