@@ -7,17 +7,50 @@ async function fetchBoards(){
     return await response.json();
 }
 
-// 한개의 피드를 렌더링
+function formatDate(isoDate) {
+    const date = new Date(isoDate);
+    return date.toLocaleString("ko-KR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+}
+
+function truncateContent(writer, content, maxLength = 20) {
+    // 1. 먼저 텍스트 길이 체크
+    if (content.length <= maxLength) {
+        return `
+      <a href="#" class="post-username">${writer}</a>
+      <span class="post-caption">${content}</span>
+    `;
+    }
+    // 2. 긴 텍스트의 경우 처리
+    const truncatedContent = content.substring(0, maxLength);
+    return `
+    <a href="#" class="post-username">${writer}</a>
+    <span class="post-caption post-caption-truncated">
+      <span class="truncated-text">${truncatedContent}...</span>
+      <span class="full-text" style="display: none;">${content}</span>
+    </span>
+    <button class="more-button">더 보기</button>
+  `;
+}
+
+
 function createBoardItem({title, content, writer,createdAt}){
+
+
     return `
     <div>
         <div class="board-item">
            <div class ="left-container">
            
                 <h2>${title}</h2>
-                <p>${content}</p>
+                <p>${truncateContent(content)}</p>
                 <span class ="post-time">
-                    ${createdAt}
+                    ${formatDate(createdAt)}
                 </span>
            </div>
             <div class = "right-container">
@@ -29,7 +62,7 @@ function createBoardItem({title, content, writer,createdAt}){
             
             
         </div>
-        <!-- 추가 게시물 항목 -->
+        
     </div>`
 }
 
