@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/css/sidebar.css">
     <link rel="stylesheet" href="/css/post.css">
     <link rel="stylesheet" href="/css/modal.css">
+    <link rel="stylesheet" href="/css/board.css">
     <!-- Modular JS -->
     <script src="/js/index.js" type="module" defer></script>
     <script src="/js/modal.js" type="module" defer></script>

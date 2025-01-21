@@ -20,9 +20,10 @@
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     width: 420px;
+animation: fadeIn 0.4s ease; /* 등장 애니메이션 */
 }
 .modal-header {
-    font-size: 1.4rem;
+    font-size: 3rem;
     font-weight: 600;
     margin-bottom: 15px;
     color: #202124;
@@ -33,7 +34,7 @@
 }
 .modal-footer button {
     padding: 10px 20px;
-    background-color: #1a73e8;
+    background-color: crimson;
     color: white;
     border: none;
     border-radius: 8px;
@@ -44,4 +45,24 @@
 }
 .modal-footer button:hover {
     background-color: #1669c1;
+}
+
+input #title{
+    height: 40px;
+    width: 200px;
+}
+
+
+
+
+/* 오버레이와 모달 등장 애니메이션 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -45%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
 }

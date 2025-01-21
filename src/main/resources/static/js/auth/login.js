@@ -17,8 +17,16 @@ async function handleLogin(e) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
     });
-    const data = await response.json();
-    alert(data.message);
+
+    if(response.ok){
+        alert('로그인에 성공했습니다. 메인페이지로 이동합니다.')
+        window.location.href = '/main'
+    }
+    else{
+         const data = await response.json();
+         alert(data.message);
+    }
+
 
 }
 function initLogin() {

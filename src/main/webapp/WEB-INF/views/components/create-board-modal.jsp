@@ -7,9 +7,11 @@
     <div class="modal-body">
         <form action="/createPost" method="post">
             <label for="title">제목:</label>
+            <br><br>
             <input type="text" id="title" name="title" required>
             <br><br>
             <label for="content" id="context-area" >내용:</label>
+            <br><br>
             <textarea id="content" name="content" rows="4" required></textarea>
             <br><br>
             <button type="submit" id ="submit-button">저장</button>
