@@ -12,6 +12,9 @@
 <body>
 <div class="signup-container">
     <div class="card">
+        <div class = "image-container">
+            <img src="/images/auth/pingpong.gif">
+        </div>
         <h2>회원가입</h2>
         <form class = "auth-form">
             <div class="form-group">
