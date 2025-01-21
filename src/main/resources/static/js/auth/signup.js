@@ -4,20 +4,25 @@ import { ValidationRules } from "./validation.js";
 // 회원 가입정보를 서버로 전송하기
 async function fetchToSignUp(userData){
 
-    const response = await fetch('api/auth/signup',{
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userData)
-    });
-
-    const data = await response.json();
-
-
-    window.location.href ='/login';
-
-
-
-
+    try {
+        const response = await fetch('api/auth/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userData),
+        });
+    if (response.ok) {
+        // 회원가입 성공 시
+        alert('회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.');
+        window.location.href = '/'; // 로그인 페이지로 리디렉션
+    } else {
+        // 회원가입 실패 시
+        const errorData = await response.json(); // 서버에서 반환된 에러 메시지 확인
+        alert('회원가입 실패!');
+    }
+} catch (error) {
+    console.error('회원가입 요청 실패:', error.message);
+    alert('서버와 통신 중 문제가 발생했습니다. 다시 시도해주세요.');
+}
 }
 
 function initSignUp() {

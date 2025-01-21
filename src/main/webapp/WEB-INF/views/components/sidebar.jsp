@@ -6,12 +6,14 @@
         </div>
     </nav>
     <nav class = "sidebar-menu">
-        <a href="/">홈</a>
-        <a href="/post">게시판</a>
+        <a href="/main">홈</a>
+        <a href="#">공지사항</a>
+        <a href="#">질문</a>
+
     </nav>
     <nav class = "logout-container" style="position: relative">
         <div class ="logout">
-            <a href="">로그아웃</a>
+            <a href="/">로그인</a>
         </div>
     </nav>
 </div>

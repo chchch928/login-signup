@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class RouteController {
     @GetMapping("/")
     public String index() {
-//        return "index";
         return "auth/login";
     }
     // 회원가입 페이지 열기
@@ -15,5 +14,10 @@ public class RouteController {
     public String signup() {
         return "auth/signup";
     }
+    //        return "index";
+
+    @GetMapping("/main")
+    public String main(){ return "index"; }
+
 
 }
