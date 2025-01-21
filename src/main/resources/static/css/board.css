@@ -1,0 +1,56 @@
+.board-item {
+    background: white;
+    margin-bottom: 15px;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex; /* Flexbox를 사용하여 좌/우 정렬 */
+    justify-content: space-between; /* 좌/우 사이 간격 유지 */
+    align-items: flex-start; /* 아이템 위쪽 정렬 */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.board-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 왼쪽 컨테이너 스타일 */
+.left-container {
+    flex: 3; /* 왼쪽 컨테이너가 더 큰 비중을 차지 */
+    padding-right: 20px;
+}
+
+.left-container h2 {
+    margin: 0 0 10px;
+    font-size: 1.5rem;
+    color: crimson;
+    font-weight: 600;
+}
+
+.left-container p {
+    margin: 0 0 10px;
+    color: #5f6368;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.left-container .post-time {
+    color: #888888;
+    font-size: 0.8rem;
+}
+
+/* 오른쪽 컨테이너 스타일 */
+.right-container {
+    flex: 1; /* 오른쪽 컨테이너는 적은 비중 */
+    display: flex;
+    justify-content: flex-end; /* 내용이 오른쪽에 위치 */
+    align-items: center; /* 수직 가운데 정렬 */
+}
+
+.right-container .post-username {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #444;
+}
