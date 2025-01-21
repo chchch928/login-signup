@@ -27,7 +27,7 @@ public class AuthController {
         memberService.signUp(signUpRequest);
 
         return ResponseEntity.ok().body(Map.of(
-                "message", "success",
+                "message", "회원가입이 완료되었습니다!",
                 "username",signUpRequest.getUsername()
         ));
     }
