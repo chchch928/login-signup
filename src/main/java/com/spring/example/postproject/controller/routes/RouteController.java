@@ -1,4 +1,4 @@
-package com.spring.example.postproject.controller;
+package com.spring.example.postproject.controller.routes;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

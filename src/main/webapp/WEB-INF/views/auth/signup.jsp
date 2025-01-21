@@ -13,7 +13,7 @@
 <div class="signup-container">
     <div class="card">
         <h2>회원가입</h2>
-        <form class = "auth-form" action="/signup" method="post">
+        <form class = "auth-form">
             <div class="form-group">
                 <label for="name">이름</label>
                 <input type="text" id="name" name="name" placeholder="이름을 입력하세요">
@@ -34,7 +34,7 @@
 <%--                <label for="confirm-password">비밀번호 확인</label>--%>
 <%--                <input type="password" id="confirm-password" name="confirm-password" placeholder="비밀번호를 다시 입력해주세요">--%>
 <%--            </div>--%>
-            <button type="submit" class="btn ">회원가입</button>
+            <button type="submit" class="btn">회원가입</button>
         </form>
         <div class="separator">이미 계정이 있습니까?</div>
         <a href="/" class="btn-link">로그인</a>
