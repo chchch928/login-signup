@@ -10,7 +10,7 @@
 
     <nav class = "sidebar-menu">
         <a href="/">홈</a>
-        <a href="/post">게시판</a>
+        <a href="/post">게시판 작성하기</a>
     </nav>
 
     <nav class = "logout-container" style="position: relative">

@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class RouteController {
     @GetMapping("/")
     public String index() {
-//        return "index";
-        return "auth/login";
+        return "index";
+//        return "auth/login";
     }
     // 회원가입 페이지 열기
     @GetMapping("/signup")

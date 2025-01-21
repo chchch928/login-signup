@@ -3,7 +3,7 @@
 
 <mapper namespace="com.spring.example.postproject.repository.MemberRepository">
 
-    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    <insert id="insertMember" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO users
             (username, password, email, name)
         VALUES
