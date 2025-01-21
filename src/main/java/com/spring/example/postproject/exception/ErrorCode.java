@@ -16,9 +16,9 @@ public enum ErrorCode {
     DUPLICATE_PHONE(HttpStatus.CONFLICT, "이미 사용 중인 전화번호입니다."),
     DUPLICATE_USERNAME(HttpStatus.CONFLICT, "이미 사용 중인 사용자 이름입니다."),
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다."),
-
-
     ;
+
+
 
     private final HttpStatus status;
     private final String message;
