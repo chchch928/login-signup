@@ -3,7 +3,10 @@ body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    background-color: #fff; /* 흰색 배경 */
+    background-image: linear-gradient(#ddd 1px, transparent 1px),
+    linear-gradient(90deg, #ddd 1px, transparent 1px); /* 격자 무늬 */
+    background-size: 40px 40px;
     color: #333;
 }
 
@@ -20,7 +23,8 @@ body {
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    max-width: 400px;
+    max-width: 450px;
+    height: 500px;
     width: 100%;
     text-align: center;
 }
@@ -44,7 +48,7 @@ label {
 }
 
 input {
-    width: 100%;
+    width: 95%;
     padding: 0.8rem;
     border: 1px solid #ddd;
     border-radius: 5px;
