@@ -12,7 +12,8 @@ async function fetchToSignUp(userData){
 
     const data = await response.json();
 
-    window.location.href ='/';
+
+    window.location.href ='/login';
 
 
 
@@ -105,7 +106,7 @@ async function validateField($input) {
 
 
     }
-    $input.dataset.isValid = isValid.toString();
+    // $input.dataset.isValid = isValid.toString();
 
 
 }

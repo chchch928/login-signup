@@ -1,5 +1,6 @@
 package com.spring.example.postproject.controller.rest;
 
+import com.spring.example.postproject.domain.member.dto.request.LoginRequest;
 import com.spring.example.postproject.domain.member.dto.request.SignUpRequest;
 import com.spring.example.postproject.domain.member.dto.response.DuplicateCheckResponse;
 import com.spring.example.postproject.domain.member.entity.Member;
@@ -39,6 +40,15 @@ public class AuthController {
         log.info("check duplicate type: {}, value: {}", type, value);
         DuplicateCheckResponse responseDto = memberService.checkDuplicate(type, value);
         return ResponseEntity.ok().body(responseDto);
+    }
+
+    // 로그인 검증 API
+    // GET방식의 특징 : ? 를 사용할 수 있음 => 보안상 좋지않음
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody @Valid LoginRequest loginRequest) {
+        log.info("request for authentication user : {}", loginRequest.getUsername());
+        Map<String, Object> responseMap = memberService.authenticate(loginRequest);
+        return ResponseEntity.ok().body(responseMap);
     }
 
 

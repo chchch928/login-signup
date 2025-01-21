@@ -13,10 +13,10 @@
 <div class="login-container">
     <div class="card">
         <h2>로그인</h2>
-        <form action="/login" method="post">
+        <form class="auth-form">
             <div class="form-group">
-                <label for="username">아이디</label>
-                <input type="text" id="username" name="username" placeholder="아이디 입력">
+                <label for="username">이메일</label>
+                <input type="text" id="username" name="username" placeholder="이메일 입력">
             </div>
             <div class="form-group">
                 <label for="password">비밀번호</label>
