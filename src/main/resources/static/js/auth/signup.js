@@ -39,9 +39,14 @@ function initSignUp() {
         password: $form.querySelector('input[name="password"]'),
     };
 
+    let throttleTimeout;
+
     const handleInput = ($input) => {
-        removeErrorMessage($input.closest('.form-group'));
-        validateField($input); // 입력값 검증 함수 호출
+        if (throttleTimeout) clearTimeout(throttleTimeout);
+        throttleTimeout = setTimeout(() => {
+            removeErrorMessage($input.closest('.form-group'));
+            validateField($input);
+        }, 300); // 300ms 동안 새로운 호출 무시
     };
 
     const handleBlur = async ($input) => {
