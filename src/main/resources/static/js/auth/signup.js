@@ -29,6 +29,7 @@ function initSignUp() {
 
     // form submit 이벤트
     const $form = document.querySelector('.auth-form');
+    const $formField = document.querySelector('.form-group')
 
     // 입력 태그들을 읽어서 객체로 관리
     const $inputs = {
@@ -43,10 +44,17 @@ function initSignUp() {
         validateField($input); // 입력값 검증 함수 호출
     };
 
+    const handleBlur = async ($input) => {
+        const $formField = $input.closest('.form-group');
+        removeErrorMessage($formField); // 기존 에러 메시지 제거
+        await validateField($input); // 유효성 검사 수행
+    };
+
+
     // 4개의 입력창에 입력 이벤트 바인딩
     Object.values($inputs).forEach($input => {
         $input.addEventListener('input', () => handleInput($input));
-        $input.addEventListener('blur', () => handleInput($input));
+        $input.addEventListener('blur', () => handleBlur($input));
     });
 
     $form.addEventListener('submit', e => {
