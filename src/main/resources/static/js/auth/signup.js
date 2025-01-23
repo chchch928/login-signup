@@ -49,10 +49,17 @@ function initSignUp() {
         }, 300); // 300ms 동안 새로운 호출 무시
     };
 
+    let blurValidationInProgress = false; // 상태 플래그 추가
+
     const handleBlur = async ($input) => {
+        if (blurValidationInProgress) return; // 중복 처리 방지
+        blurValidationInProgress = true;
+
         const $formField = $input.closest('.form-group');
         removeErrorMessage($formField); // 기존 에러 메시지 제거
         await validateField($input); // 유효성 검사 수행
+
+        blurValidationInProgress = false; // 플래그 초기화
     };
 
 
@@ -130,13 +137,19 @@ async function validateField($input) {
 }
 
 function showError($formField, message) {
+    const existingError = $formField.querySelector('.error-message');
+    if (existingError) {
+        // 이미 존재하는 에러 메시지가 같은 내용인지 확인
+        if (existingError.textContent === message) return; // 중복 메시지 방지
+        existingError.remove(); // 기존 메시지 삭제
+    }
 
     $formField.classList.add('error');
-        const $errorSpan = document.createElement('span');
-        $errorSpan.classList.add('error-message');
-        $errorSpan.textContent = message;
-        $formField.append($errorSpan);
-    }
+    const $errorSpan = document.createElement('span');
+    $errorSpan.classList.add('error-message');
+    $errorSpan.textContent = message;
+    $formField.append($errorSpan);
+}
 
     /**
      * 에러 및 비밀번호 피드백을 제거한다.
