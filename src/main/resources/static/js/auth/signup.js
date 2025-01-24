@@ -150,8 +150,8 @@ function showError($formField, message) {
         if (error) error.remove();
     }
 
-    function duplicateCheckEmail($formField, inputValue) {
-        fetch(`api/auth/check-duplicate?type=email&value=${inputValue}`)
+     function duplicateCheckEmail($formField, inputValue) {
+         fetch(`api/auth/check-duplicate?type=email&value=${inputValue}`)
             .then(response => response.json())
             .then(data => {
                 showError($formField, data.message);
@@ -159,7 +159,7 @@ function showError($formField, message) {
     }
 
     async function duplicateCheckUsername($formField, inputValue) {
-        fetch(`api/auth/check-duplicate?type=username&value=${inputValue}`)
+        await fetch(`api/auth/check-duplicate?type=username&value=${inputValue}`)
             .then(response => response.json())
             .then(data => {
                 showError($formField, data.message);

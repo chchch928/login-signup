@@ -32,4 +32,5 @@ async function handleLogin(e) {
 function initLogin() {
     $loginForm.addEventListener('submit', handleLogin);
 }
+//========= 메인 실행 코드===========//
 document.addEventListener('DOMContentLoaded', initLogin);
