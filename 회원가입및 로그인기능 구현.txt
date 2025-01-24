@@ -1,0 +1,203 @@
+1. 로그인, 회원가입 jsp를 생성하고 그에 맞는 css를 만들어준다
+- 간단하게 signup.jsp/ login.jsp와 signup.css/ login.css로 구성
+
+2. 스프링 시큐리티 의존성을 설치하고 설정한다
+(1) build.gradle에 스프링 시큐리티 의존성 설치 -> 시큐리티 password를 생성해준다.  
+- 필요한 이유? 로그인 및 회원가입과 같은 인증과 권한부여 기능을 손쉽게 구현하는데 필요
+
+(2) SecurityConfig로 보안을 커스텀으로 설정한다. 
+- @EnableWebSecurity로 커스텀 시큐리티 설정파일이라고 설정
+- 시큐리티 필터체인 빈을 등록 (체인처럼 계속 검증)
+- 기본적으로 제공하는 로그인 페이지를 없애준다. 
+
+3. 회원관련 테이블 생성 및 엔터티 설계 
+(1) 회원 데이터베이스를 설계
+- 회원가입시 필요한 컬럼(id, password, username, email, created_at등)들을 설정하고 각 컬럼에 맞는 값설정을 한다.
+
+(2) 회원 엔터티 생성
+- 엔터티를 생성하는 이유? 데이터베이스와 어플리케이션 간의 연결 및 데이터 관리를 효율적이고 일관되게 하기 위해서이다. (회원 데이터베이스: 실제로 데이터를 저장하는 물리적 장소, 회원 엔터티: 어플리케이션에서 데이터베이스와 상호작용하는 추상화된 데이터모델 )
+- db에 저장한 데이터베이스와 일치되게 구성하고, 코드를 간결하고 생산성 높이기 위해서 @Getter,@Setter,@ToString,@EqualsAndHashCode,@NoArgsConstructor,@AllArgsConstructor,@Builder를 붙여준다.
+
+(3)회원 레포지토리 생성
+- 레포지토리를 생성하는 이유? 어플리케이션 코드와 데이터베이스간의 연결을 담당하면서 데이터 액세스 계층의 역할을 수행한다.
+- @Mapper를 사용해서 sql메핑을 수행하는 인터페이스임을 나타낸다.
+- 회원정보를 생성하는 insertMember메서드를 구현한다.
+
+(4) MemberMapper.xml 생성
+- 레포지토리에서 만든 insertMember메서드를 수행하기 위해서 생성한다
+- mapper의 namespace에 방금 만든 레포지토리의 경로(com.spring.example.postproject.repository.MemberRepository)를 넣는다.
+- 레포지토리에서 만든 insertMember를 수행시키기 위해서 insert문에 id를 insertMember로 동일하게 설정한다. 그리고 keyProperty엔 pk값인 id를 넣고, insert으로 users에 넣을 값인 username, password, email, name를 넣도록 설정한다.
+
+4. 회원관련 예외처리
+(1) ErrorCode 생성
+- ErrorCode에 회원관련 에러상황을 추가한다. (INVALID_SIGNUP_DATA, DUPLICATE_EMAIL등등)
+(2) MemberException 생성
+- 실제 예외를 발생시키는 역할을 하며, ErrorCode를 포함하여 해당 예외의 원인과 상태코드를 함께 전달하는 역할을 하게 한다.
+(3) 회원관련 에러 처리를 자동으로 처리할 수 있도록 GlobalExceptionHandler를 만든다.
+- GlobalExceptionHandler에 @ExceptionHandler(MemberException.class)를 생성해서 MemberException 예외를 감지해서 자동 예외 처리를 하고 로그로 기록한 후에 클라이언트가 오류를 이해하고 처리할 수 있도록 에러응답을 생성하고 이를 클라이언트에게 적절한 http응답으로 반환한다.
+
+5. 회원가입 서비스처리
+(1) MemberService 생성
+*controller가 service에 의존 service가 repository에 의존 *
+- @Service, @Slf4j(로그찍기), @Transactional, @RequiredArgsConstructor(repository를 주입받기위해)
+
+(2) 회원가입 요청 데이터를 클라이언트로부터 안전하고 명확하게 받기위해 request dto인 SignUpRequest 생성
+- @Getter @Setter @ToString @NoArgsConstructor @AllArgsConstructor을 입력
+- 웹사이트에서 받아올 name username email password 필드를 가져와서 필요한 데이터 검증(@NotBlank, @Email, @Pattern)
+- 그리고 dto는 클라이언트 요청에 최적화된 구조이므로 엔터티로 변환한다.
+
+(3) 다시 MemberService로 돌아가서 dto인 signUpRequest를 데이터베이스에 insertMember로 데이터베이스에 저장한다.
+
+6. 회원가입 API 생성
+(1) AuthController 생성 
+- 필요한 이유? 회원가입과 같은 인증 관련 요청을 처리하기 위해 만들어진 컨트롤러로 클라이언트로부터의 http 요청을 처리하고 인증과 관련된 로직을 수행하기 위해 서비스 계층과 연동
+- @RestController, @RequestMapping("/api/auth"),@Slf4j,@RequiredArgsConstructor를 설정
+- memberService를 주입받고 회원가입은 데이터를 생성하기 때문에 PostMapping을 통해, 클라이언트가 서버에 데이터를 전송한다.
+(@RequestMapping은 클라이언트가 전송한 JSON 데이터를 SignUpRequest로 매칭하고 @Valid는 요청데이터의 유효성을 검증)
+- MemberService를 호출하여 signUpRequest를 위임한다.
+-회원가입 성공시, return으로 요청처리 결과를 클라이언트에게 전달
+
+(2) 회원가입 api 테스트 
+-  포스트맨으로 들어가서 http://localhost:8900/api/auth/signup 으로 들어가서 SignUpRequest에서 설정했던 키값(email,username,name,password)들을 body의 raw에 json 형식으로 
+만들어서 post 요청보낸다.
+- 요청보낸 데이터가 데이터베이스에 들어갔는지 확인하기 위해서 데이터베이스에 SELECT로 확인해본다
+
+7. 패스워드 암호화하기
+암호화하는 이유? 그럼 사이트 운영자도 비번을 알수있음 개인정보 유출가능성이 있음
+
+(1) 패스워드를 암호화 해줄 PasswordEncoderConfig를 생성
+- 스프링 시큐리티를 이용해 PasswordEncoder를 활용해서 BCryptPasswordEncoder로 내보내도록 한다.
+
+(2) MemberService에 PasswordEncoder를 주입
+- signupRequest에서 순수 패스워드를 꺼내서 암호화시키는 작업을 한다.  
+- 데이터베이스에 저장하기 전에 setPassword로 암호화된 패스워드를 주입한다.
+
+(3) 회원가입 api 다시 테스트
+- 포스트맨으로 다시 회원가입을 하고 SELECT문으로 데이터베이스를 확인해보면 암호화된 패스워드를 확인할 수 있다
+
+8. 회원가입 API 요청
+(1) signup.js 생성
+- 메인을 실행할 코드를 작성 ('DOMContentedLoaded: 태그들이 다 렌더링되고 실행)
+- 이벤트를 걸기위해 폼을 불러오고, 만일 폼이 전송되었을때 이벤트가 실행되도록 설정 
+- initSignUp 함수를 만들어, 사용자가 입력한 모든 입력값을 읽어오도록 만든다.
+- signup.jsp를 보고 각각 입력창에 해당하는 값들을 불러온다. (예시- email: $form.querySelector('input[name="email"]').value
+-  payload에서 앞에는 키 이름 뒤에는 실제 들어갈 키값으로 설정하고, payload를 log로 전송시킨다
+- 웹페이지에서 입력했을때 payload를 잘 읽어오는지 확인한다.
+- 잘읽어오는 것을 확인했으면, log를 지우고 서버로 데이터를 전송할 함수 fetchToSignUp 만든다
+- fetchToSignUp은 fetch 함수이므로 네트워크 요청이 완료된 데이터를 정확하게 처리하기 위해서 비동기함수로 만든다.
+- fetch에 URI('api/auth/signup')를 넣고, 클라이언트가 회원가입 데이터를 서버에 JSON 형식으로 POST 요청한다.
+- 만일 회원가입에 성공시, 회원가입이 완료되면서 로그인페이지로 이동한다는 알림창과 함께 게시판 페이지로 이동한다. 
+- 만일 회원가입 실패시 alert로 실패한 메세지가 뜬다.
+
+9. 사용자 경험을 올리기 위해 회원가입 빈 입력값 검증
+(1) 4개의 입력창에 입력 이벤트를 바인딩한다.
+- 모든 입력 태그들을 읽어서 객체 $inputs로 만들고 Object.values()로 4개의 값들을 다 불러온다.
+- forEach문으로 각각의 input태그 input이벤트를 걸어 검사를 수행할 함수 validateField를 호출한다
+- 포커스를 잃었을때 에러메세지를 출력하기 위해서 blur이벤트를 걸어 똑같이 validateField를 호출한다.
+
+(2) 입력값을 검증하고 에러메세지를 랜더링할 함수 validateField 함수를 만든다
+- 각각 어떤 태그인지 알기위해서 $input.name을 fieldName변수로 설정하고 입력값을 읽어오기 위해 $input.value를 inputValue 변수로 설정한다.
+- 만일 inputValue가 존재하지 않을떄 에러메세지를 렌더링하는 함수showError를 호출한다
+
+(3) 에러메세지를 렌더링할 함수 showError를 생성
+- input창 아래에 에러메시지가 출력되어야 하므로 input의 부모($formField)를 가져와서 거기에 띄울 에러메세지(message)를 가져온다.
+- $formField에 error클래스를 추가해서 input창을 빨간색 태두리로 변경시키고, span태그를 생성하고 그 span택에 error-message라는클래스를 부여한다.
+- span태그에 메세지를 넣어주고 $formField에 span태그를 추가한다.
+
+(4) 다시 validateField 함수에 호출할 showError함수로 가서 필요한 변수를 넣어줌
+- input의 부모를 가져오기위해서 input에서 가장 가까운 form-field 클래스를 찾아오는 변수로 $formField를 만든다
+-그리고 에러메세지가 여러개이므로 에러메세지 객체를 만들어주기 위해서 validation.js 를 생성한다.
+- validation.js의 객체를 가져와서 키이름FieldName으로 알맞는 에러메세지를 출력하도록 한다.
+
+(5) 에러메세지가 여러개 생성되는 것을 방지하기 위해 removeErrorMessage 함수를 생성해서 다시 아까 input 이벤트와 blur이벤트에 넣어준다.
+
+10. 입력값 중복확인 API 만들기
+(1) 멤버 레포지토리에 이메일 중복 체크용 메서드인 findByEmail과 별명 중복 체크용 메서드인 findByUsername을 만든다.
+- 이메일과 별명 둘다 null을 반환하지 않고 optional이라고 반환시켜서 값이 없을경우 처리를 다르게 할 수 있다.
+
+(2)MemberMapper로 돌아가서 데이터베이스로 findByEmail, findByUsername을 실행할 수 있게 만든다
+- select문으로 id는 아까 레포지토리에서 만든 메서드 그래도 적어주고, email이면 where에 email = #{email}로 만들어준다. 
+
+(3) MemberService로 가서 중복검사 처리를 해준다
+- CheckDuplicate로 type(검사할 값의 타입)과 value(실제로 중복을 검사할 값)를 변수로 가져온다
+- type을 switch 문으로 email케이스에서는 레포지토리의 findByEmail로 값을 불러오고, null이 아닌경우(중복인 경우)와 null인 경우(중복이 아닌경우)로 나누어야 한다.
+
+(4) member의 dto로 DuplicateCheckResponse를 생성
+- 만든이유? 서버가 클라이언트에게 데이터를 전송할때는 무조건 json 형식으로 주는 것이 좋기때문에 dto를 만든다
+- @Getter,@AllArgsConstructor,@Builder로 설정한다.
+- 사용가능한지 여부(available)과 중복검사 결과메세지(message)를 필드로 설정
+- 사용가능할 경우에 available로 객체 생성 메서드와 사용불가능할 경우 unavailable로 객체 생성 메서드를 만든다.
+
+(5) 다시 MemberService로 돌아가서 DuplicateResponse를 설정한다.
+- email의 케이스를 예시로 들자면
+- null일 경우 .map(m -> DuplicateCheckResponse.unavailable("이미 사용 중인 이메일입니다."))
+- null이 아닐 경우 .orElse(DuplicateCheckResponse.available()); 로 설정하고 username도 이와 비슷하게 만들면 된다.
+- default로 switch문에서 지원되지 않은 타입이 전달되었을 경우 잘못된 회원가입 데이터라고 예외를 던진다.
+
+(6) AuthController로 가서 중복 확인을 검사하는 API를 만든다
+- 중복확인은 조회하는 것이므로 @GetMapping("/check-duplicate")으로 설정한다.
+- http요청에서 전달된 type과 value 매개변수를 @RequestParam으로 받아온다
+- 중복검사 요청이 들어왔을때 요청된 type과 value를 로그로 기록한다.
+- 서비스에서 만든 checkDuplicate를 호출해서 type과 value를 전달하고 중복여부를 판단하고 결과를 responseDto로 반환받는다.
+- http 응답을 생성해서 상태코드를 ok로 설정하고 중복검사 결과 객체를 응답본문에 포함한다.
+
+(7) 포스트맨으로 중복확인 API를 테스트해본다
+- Get으로 url을 http://localhost:9999/api/auth/check-duplicate로 적고,  params의 key에는 type과 value를 적고, type의 value는 email, value의 value에는 중복임을 제대로 인식하는 지 확인하기 위해서 이미 데이터베이스에 있는 이메일 값을 입력해본다. 
+- 성공적이라면 available이 false로, message는 이미 사용중인 이메일입니다 로 출력된다.
+- username도 이와같이 테스트 해본다.
+
+11. 입력값 중복확인 API 요청하기
+(1) signup.js로 가서 입력값 중복확인을 해줄 duplicateCheckEmail 함수를 만든다.
+- fetch로 사용해 api/auth/check-duplicate?type=email&value=${inputValue}로 get 요청을 보낸다
+- 그러면 response가 오는데 그 response를 json형식으로 변환하고 변환된 json데이터에서 $formField와 data.message를 showError 함수에 $formField와 data의 message를 전달하여 화면에 표시되도록 한다. 
+
+(2) 이를 ValidateField 함수로 가서 빈 입력값 검사를 마치고 중복값 검사를 다시 실행한다.
+- 만일 입력 필드가 email이면, duplicateCheckEmail 함수를 호출하여 서버에 이메일 중복여부를 확인한다. 그리고 만일 입력필드가 username이면, duplicateCheckUsername함수를 호출하여 서버에 별명 중복여부를 확인한다.
+
+12. 회원가입 완료
+- fetchToSignUp 함수에서 회원가입 성공시 로그인 페이지로 이동하게 해준다
+
+//=============로그인 시작============//
+
+13. 로그인 검증 로직
+(1) ErrorCode에 인증관련 에러를 넣어준다.
+
+(2) 클라이언트가 전달한 계정명과 패스워드를 받아와야 하므로 request dto인 LoginRequest를 생성한다
+- @Getter, @AllArgsConstructor, @NoArgsConstructor, @Builder를 붙여준다.
+- 필드로 username, password를 받아오고, 빈공간일때 메세지를 각각 붙여준다.
+
+(3) MemberService로 가서 로그인 처리를 해줄 authenticate 메서드를 만든다.
+- 아까 만든 LoginRequest에서 받아와서 username을 loginRequest에서 받아오고, 받아온 username을 레포지토리에서 findByEmail로 username을 조회한다. 
+- 만일 조회가 되지 않을 경우 orElseThrow를 이용해서 , 존재하지 않는 회원이라고 예외가 발생하도록 MemberException으로 예외상황을 발생시킨다. 
+- 사용자가 입력한 패스워드인 loginRequest의 getPassword로 추출하고, DB에 저장되어 있는 패스워드를 foundMember의 getpassword로 추출한다.
+- 그리고 만일 두 패스워드가 일치하지 않을경우 예외를 발생시킨다. (주의해야할 사항으로는 이미 데이터베이스에는 인코딩 되어있는 패스워드 이므로 암호화된 패스워드를 디코딩해서 비교해야한다. )
+- 두 패스워드가 일치할 경우 Json을 생성한다.(message- 로그인에 성공했습니다./ username- foundMember.getUsername())
+- return타입이 map이므로 메서드 앞에 Map<String, Object>로 만든다.
+
+
+14. 로그인 검증 API 만들기
+(1) AuthController에서 로그인 검증 API를 생성
+- PostMapping로 로그인을 검증하는 이유? GET은 ?를 사용할 수 있기때문에 주소창에 로그인 내역이 남기때문에 보안에 좋지 않음
+- /login 경로로 들어오는 POST 요청을 처리한다.
+- login 메서드를 생성해서, request dto인 loginRequest를 매개변수로 가져와서 json으로 받아올 것이기 때문에 @RequestBody 검증할거라서 @Valid를 사용한다.
+- 로그인 요청이 들어오면 사용자가 입력한 아이디를 로그에 기록한다.
+- username으로 사용자 데이터베이스에서 조회하고 입력된 비밀번호가 저장된 비밀번호와 일치하는지 검증하고 성공 시 응답데이터를 생성한다
+- 이를 http응답으로 생성해서 내보낸다. 
+
+(2) 포스트맨으로 로그인 검증 API를 확인해본다
+- Post로 url에 http://localhost:8900/api/auth/login를 넣고, body에 raw-json으로 내 데이터베이스에 있는 email과 비밀번호를 입력해서 로그인이 되는지 테스트해본다.
+- 데이터베이스에 없는 계정으로도 테스트해서 존재하지 않은 회원으로 에러가 발생하는지 확인해본다.
+
+15. 로그인 API 요청 보내기(login.js)
+(1) 메인실행 코드로 addEventListener로 initLogin 함수를 설정한다
+
+(2) initLogin 함수를 생성
+- 로그인 form을 가져온다. 
+- 로그인 폼이 제출될때 이벤트가 발생하면서 handleLogin 함수를 호출하도록 한다.
+
+(3) 서버와 통신하여 로그인을 검증할 handleLogin함수를 생성
+- 사용자가 입력한 유저네임(이메일)과 비밀번호를 가져온다.
+- 이 부분은 사실상 회원가입에 했던 것과 동일하다. (데이터를 가져오고, 데이터를 보내는 방식)
+
+
+
