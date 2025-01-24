@@ -10,14 +10,16 @@ async function fetchToSignUp(userData){
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(userData),
         });
+
+        const data = await response.json();
     if (response.ok) {
         // 회원가입 성공 시
         alert('회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.');
         window.location.href = '/'; // 로그인 페이지로 리디렉션
     } else {
         // 회원가입 실패 시
-        const errorData = await response.json(); // 서버에서 반환된 에러 메시지 확인
-        alert('회원가입 실패!');
+        alert(data.message);
+        alert('회원가입에 실패하셨습니다. 다시 시도해주세요');
     }
 } catch (error) {
     console.error('회원가입 요청 실패:', error.message);
@@ -85,18 +87,6 @@ function initSignUp() {
             password: password
         }
 
-        if (!document.querySelector('input[name="email"]').checkValidity()) {
-            return alert("이메일 오류");
-        }
-        // if (!name.checkValidity()) {
-        //     return alert("이름 오류");
-        // }
-        // if (!username.checkValidity()) {
-        //     return alert("별칭 오류");
-        // }
-        // if (!password.checkValidity()) {
-        //     return alert("패스워드 오류");
-        // }
         // 서버로 데이터 전송
         fetchToSignUp(payload);
 
